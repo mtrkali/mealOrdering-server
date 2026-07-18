@@ -1,0 +1,17 @@
+import express from "express";
+import { providerController } from "./provider.controller";
+
+
+const router = express.Router();
+
+router.get(
+    "/",
+    providerController.getAllProviders
+)
+
+router.post(
+    "/",
+    providerController.createProvider
+)
+
+export const providerRouter = router

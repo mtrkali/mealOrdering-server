@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client"
+  // output   = "../generated/prisma"
+  output   = "../src/generated"
+  // moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model MealCategory {
+  id    String @id @default(uuid())
+  name  String @unique
+  meals Meal[]
+}
+
+model Meal {
+  id         String          @id @default(uuid())
+  title      String
+  image      String?
+  description String?
+  price      Float
+
+  cuisine    Cuisine        @default(BANGLADESHI)
+  dietary    DietaryPreference[]
+
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  providerId String
+  categoryId String?
+  category   MealCategory?   @relation(fields: [categoryId], references: [id])
+  provider   ProviderProfile @relation(fields: [providerId], references: [id])
+  orders     OrderItem[]
+  reviews    Review[]
+}
+
+model User {
+  id              String           @id
+  name            String
+  email           String           @unique
+  emailVerified   Boolean          @default(false)
+  image           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  phone           String?          @default("")
+  status          UserStatus       @default(ACTIVE)
+  role            Role             @default(CUSTOMER)
+  orders          Order[]
+  providerProfile ProviderProfile?
+  reviews         Review[]
+  accounts        Account[]
+  sessions        Session[]
+  providerApplication providerApplication[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model ProviderProfile {
+  id           String @id @default(uuid())
+  userId       String @unique
+
+  businessName String
+  phone String
+  address String
+
+  status       ProviderProfileStatus @default(ACTIVE)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  meals        Meal[]
+  user         User   @relation(fields: [userId], references: [id])
+}
+
+model providerApplication {
+  id  String @id @default(uuid())
+  userId String @unique
+
+  businessName String 
+  phone String
+  address String
+
+  status ProviderApplicationStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+
+
+model Order {
+  id         String      @id @default(uuid())
+  userId     String
+  totalPrice Float
+  address    String
+  status     OrderStatus @default(PLACED)
+  user       User        @relation(fields: [userId], references: [id])
+  createdAt  DateTime    @default(now())
+  items      OrderItem[]
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  orderId  String
+  mealId   String
+  quantity Int
+  price    Float
+  meal     Meal   @relation(fields: [mealId], references: [id])
+  order    Order  @relation(fields: [orderId], references: [id])
+}
+
+model Review {
+  id     String @id @default(uuid())
+
+  rating Int
+  comment String?
+  
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  
+  orderId String @unique
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  mealId String
+  meal   Meal   @relation(fields: [mealId], references: [id])
+  
+}
+
+enum Role {
+  CUSTOMER
+  PROVIDER
+  ADMIN
+}
+
+enum OrderStatus {
+  PLACED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+
+enum Cuisine {
+  BANGLADESHI
+  INDIAN
+  CHINESE
+  ITALIAN
+  MEXICAN
+  THAI
+  JAPANESE
+}
+enum ProviderApplicationStatus{
+  PENDING
+  REJECTED
+  APPROVED
+}
+
+enum DietaryPreference {
+  HALAL
+  VEGAN
+  VEGETARIAN
+  GLUTEN_FREE
+  DAIRY_FREE
+  KETO
+}
+
+enum ProviderProfileStatus{
+  ACTIVE
+  INACTIVE
+}
