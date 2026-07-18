@@ -90,11 +90,11 @@ const deleteOrder = async(orderId: string, userId: string, role:string) =>{
     if(!isExistOrder) {throw new Error ("Order is not exist")};
     if(isExistOrder.userId !== userId && role !== "ADMIN") throw new Error("you have not access!!")
     
-    // return await prisma.$transaction(async(tx) => {
-    //   await tx.orderItem.deleteMany({where: {orderId}})
-    //   return await tx.order.delete({where: {id: orderId}})
-    // })
-   return a
+    return await prisma.$transaction(async(tx) => {
+      await tx.orderItem.deleteMany({where: {orderId}})
+      return await tx.order.delete({where: {id: orderId}})
+    })
+   
 }
 
 const getUsersOrder = async(userId: string) => {

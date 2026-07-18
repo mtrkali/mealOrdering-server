@@ -4,8 +4,13 @@ import cors from "cors";
 import express from "express";
 import path from "path";
 import qs from "qs";
-import { auth } from "./lib/auth.js";
-import userRouter from "./app/modules/user/user.router.js";
+import { auth } from "./lib/auth";
+import { categoryRouter } from "./app/modules/category-route/category.router";
+import { orderRouter } from "./app/modules/order/order.router";
+import { userRouter } from "./app/modules/user/user.router";
+import { mealsRouter } from "./app/modules/meals/meals.router";
+import { providerApplicationRouter } from "./app/modules/providerApplicationRoute/providerApp.router";
+import { providerRouter } from "./app/modules/providers/provider.router";
 const app = express();
 app.set("query parser", (str) => qs.parse(str));
 app.set("view engine", "ejs");
@@ -32,6 +37,11 @@ app.use(express.urlencoded({ extended: true }));
 // ========================== Connect Routes ==========================
 // app.use("/api/v1", IndexRoutes);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/meals", mealsRouter);
+app.use("/api/v1/beprovider", providerApplicationRouter);
+app.use("/api/v1/providers", providerRouter);
 // Basic route
 app.get("/", async (req, res) => {
     res.status(201).json({

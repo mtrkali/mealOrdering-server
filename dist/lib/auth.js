@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { prisma } from "./prisma.js";
+import { prisma } from "./prisma";
 import { oAuthProxy } from "better-auth/plugins";
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -8,6 +8,25 @@ export const auth = betterAuth({
     }),
     baseURL: process.env.FRONTEND_URL,
     trustedOrigins: [process.env.FRONTEND_URL],
+    //user additional field
+    user: {
+        additionalFields: {
+            role: {
+                type: 'string',
+                defaultValue: "CUSTOMER",
+                required: false,
+            },
+            phone: {
+                type: 'string',
+                defaultValue: '',
+                required: false,
+            },
+            dob: {
+                type: 'string',
+                required: false,
+            },
+        }
+    },
     //...other options
     emailAndPassword: {
         enabled: true,
@@ -18,10 +37,10 @@ export const auth = betterAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             prompt: "select_account",
         },
-        github: {
-            clientId: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        },
+        // github: {
+        //   clientId: process.env.GITHUB_CLIENT_ID as string,
+        //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        // },
     },
     // account: { skipStateCookieCheck: true }, // solved redirect issue
     advanced: {

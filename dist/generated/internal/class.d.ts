@@ -11,8 +11,8 @@ export interface PrismaClientConstructor {
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more MealCategories
+   * const mealCategories = await prisma.mealCategory.findMany()
    * ```
    *
    * Read more in our [docs](https://pris.ly/d/client).
@@ -30,8 +30,8 @@ export interface PrismaClientConstructor {
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more MealCategories
+ * const mealCategories = await prisma.mealCategory.findMany()
  * ```
  *
  * Read more in our [docs](https://pris.ly/d/client).
@@ -116,13 +116,35 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         extArgs: ExtArgs;
     }>>;
     /**
- * `prisma.user`: Exposes CRUD operations for the **User** model.
+ * `prisma.mealCategory`: Exposes CRUD operations for the **MealCategory** model.
   * Example usage:
   * ```ts
-  * // Fetch zero or more Users
-  * const users = await prisma.user.findMany()
+  * // Fetch zero or more MealCategories
+  * const mealCategories = await prisma.mealCategory.findMany()
   * ```
   */
+    get mealCategory(): Prisma.MealCategoryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.meal`: Exposes CRUD operations for the **Meal** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Meals
+      * const meals = await prisma.meal.findMany()
+      * ```
+      */
+    get meal(): Prisma.MealDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.user`: Exposes CRUD operations for the **User** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Users
+      * const users = await prisma.user.findMany()
+      * ```
+      */
     get user(): Prisma.UserDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
@@ -157,6 +179,61 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get verification(): Prisma.VerificationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.providerProfile`: Exposes CRUD operations for the **ProviderProfile** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ProviderProfiles
+      * const providerProfiles = await prisma.providerProfile.findMany()
+      * ```
+      */
+    get providerProfile(): Prisma.ProviderProfileDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.providerApplication`: Exposes CRUD operations for the **providerApplication** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ProviderApplications
+      * const providerApplications = await prisma.providerApplication.findMany()
+      * ```
+      */
+    get providerApplication(): Prisma.providerApplicationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.order`: Exposes CRUD operations for the **Order** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Orders
+      * const orders = await prisma.order.findMany()
+      * ```
+      */
+    get order(): Prisma.OrderDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.orderItem`: Exposes CRUD operations for the **OrderItem** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more OrderItems
+      * const orderItems = await prisma.orderItem.findMany()
+      * ```
+      */
+    get orderItem(): Prisma.OrderItemDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.review`: Exposes CRUD operations for the **Review** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Reviews
+      * const reviews = await prisma.review.findMany()
+      * ```
+      */
+    get review(): Prisma.ReviewDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

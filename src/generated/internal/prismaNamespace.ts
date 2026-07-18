@@ -1406,13 +1406,13 @@ export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof t
 
 export const ReviewScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  mealId: 'mealId',
-  orderId: 'orderId',
   rating: 'rating',
   comment: 'comment',
+  userId: 'userId',
+  orderId: 'orderId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  mealId: 'mealId'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]

@@ -15,7 +15,7 @@ const createProviderApplication = async(applicantData: Prisma.providerApplicatio
 
 const approveBeProviderApplication = async(providerData: ProviderInput)=> { 
     return await prisma.$transaction(async(tx) =>{
-        const userId = providerData.userId
+        const userId = providerData.userId as string
         if (typeof userId !== "string" || userId.trim().length === 0) { throw new Error("Missing userId")}
         const user = await tx.user.update({
             where: { id: userId },

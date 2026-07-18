@@ -7,5 +7,47 @@
 *
 * 🟢 You can import this file directly.
 */
-export {};
+export const Role = {
+    CUSTOMER: 'CUSTOMER',
+    PROVIDER: 'PROVIDER',
+    ADMIN: 'ADMIN'
+};
+export const OrderStatus = {
+    PLACED: 'PLACED',
+    PREPARING: 'PREPARING',
+    READY: 'READY',
+    DELIVERED: 'DELIVERED',
+    CANCELLED: 'CANCELLED'
+};
+export const UserStatus = {
+    ACTIVE: 'ACTIVE',
+    INACTIVE: 'INACTIVE',
+    BANNED: 'BANNED'
+};
+export const Cuisine = {
+    BANGLADESHI: 'BANGLADESHI',
+    INDIAN: 'INDIAN',
+    CHINESE: 'CHINESE',
+    ITALIAN: 'ITALIAN',
+    MEXICAN: 'MEXICAN',
+    THAI: 'THAI',
+    JAPANESE: 'JAPANESE'
+};
+export const ProviderApplicationStatus = {
+    PENDING: 'PENDING',
+    REJECTED: 'REJECTED',
+    APPROVED: 'APPROVED'
+};
+export const DietaryPreference = {
+    HALAL: 'HALAL',
+    VEGAN: 'VEGAN',
+    VEGETARIAN: 'VEGETARIAN',
+    GLUTEN_FREE: 'GLUTEN_FREE',
+    DAIRY_FREE: 'DAIRY_FREE',
+    KETO: 'KETO'
+};
+export const ProviderProfileStatus = {
+    ACTIVE: 'ACTIVE',
+    INACTIVE: 'INACTIVE'
+};
 //# sourceMappingURL=enums.js.map

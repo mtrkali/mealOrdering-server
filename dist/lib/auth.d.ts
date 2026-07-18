@@ -2,6 +2,24 @@ export declare const auth: import("better-auth").Auth<{
     database: (options: import("better-auth").BetterAuthOptions) => import("better-auth").DBAdapter<import("better-auth").BetterAuthOptions>;
     baseURL: string | undefined;
     trustedOrigins: string[];
+    user: {
+        additionalFields: {
+            role: {
+                type: "string";
+                defaultValue: string;
+                required: false;
+            };
+            phone: {
+                type: "string";
+                defaultValue: string;
+                required: false;
+            };
+            dob: {
+                type: "string";
+                required: false;
+            };
+        };
+    };
     emailAndPassword: {
         enabled: true;
     };
@@ -10,10 +28,6 @@ export declare const auth: import("better-auth").Auth<{
             clientId: string;
             clientSecret: string;
             prompt: "select_account";
-        };
-        github: {
-            clientId: string;
-            clientSecret: string;
         };
     };
     advanced: {

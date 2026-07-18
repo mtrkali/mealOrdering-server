@@ -67,10 +67,17 @@ export const JsonNull = runtime.JsonNull;
  */
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
+    MealCategory: 'MealCategory',
+    Meal: 'Meal',
     User: 'User',
     Session: 'Session',
     Account: 'Account',
-    Verification: 'Verification'
+    Verification: 'Verification',
+    ProviderProfile: 'ProviderProfile',
+    providerApplication: 'providerApplication',
+    Order: 'Order',
+    OrderItem: 'OrderItem',
+    Review: 'Review'
 };
 /**
  * Enums
@@ -81,6 +88,23 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 });
+export const MealCategoryScalarFieldEnum = {
+    id: 'id',
+    name: 'name'
+};
+export const MealScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    image: 'image',
+    description: 'description',
+    price: 'price',
+    cuisine: 'cuisine',
+    dietary: 'dietary',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    providerId: 'providerId',
+    categoryId: 'categoryId'
+};
 export const UserScalarFieldEnum = {
     id: 'id',
     name: 'name',
@@ -88,7 +112,10 @@ export const UserScalarFieldEnum = {
     emailVerified: 'emailVerified',
     image: 'image',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    phone: 'phone',
+    status: 'status',
+    role: 'role'
 };
 export const SessionScalarFieldEnum = {
     id: 'id',
@@ -122,6 +149,51 @@ export const VerificationScalarFieldEnum = {
     expiresAt: 'expiresAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const ProviderProfileScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    businessName: 'businessName',
+    phone: 'phone',
+    address: 'address',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const ProviderApplicationScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    businessName: 'businessName',
+    phone: 'phone',
+    address: 'address',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const OrderScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    totalPrice: 'totalPrice',
+    address: 'address',
+    status: 'status',
+    createdAt: 'createdAt'
+};
+export const OrderItemScalarFieldEnum = {
+    id: 'id',
+    orderId: 'orderId',
+    mealId: 'mealId',
+    quantity: 'quantity',
+    price: 'price'
+};
+export const ReviewScalarFieldEnum = {
+    id: 'id',
+    rating: 'rating',
+    comment: 'comment',
+    userId: 'userId',
+    orderId: 'orderId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    mealId: 'mealId'
 };
 export const SortOrder = {
     asc: 'asc',
