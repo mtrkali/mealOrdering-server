@@ -1,4 +1,4 @@
-import { auth } from "../../lib/auth";
+import { auth } from "../../lib/auth.js";
 export var UserRole;
 (function (UserRole) {
     UserRole["CUSTOMER"] = "CUSTOMER";

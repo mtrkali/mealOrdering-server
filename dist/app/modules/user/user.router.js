@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { userController } from "./user.controller";
-import { checkAuth, UserRole } from "../../middleware/auth";
+import { userController } from "./user.controller.js";
+import { checkAuth, UserRole } from "../../middleware/auth.js";
 const router = Router();
 router.get("/", checkAuth(UserRole.ADMIN), userController.getAllUsers);
 router.get("/:userId", checkAuth(UserRole.ADMIN), userController.getSingleUser);

@@ -13,7 +13,7 @@ const createProviderApplication = async(applicantData: Prisma.providerApplicatio
 }
 
 
-const approveBeProviderApplication = async(providerData: ProviderInput)=> { 
+const approveBeProviderApplication = async(providerData: any)=> { 
     return await prisma.$transaction(async(tx) =>{
         const userId = providerData.userId as string
         if (typeof userId !== "string" || userId.trim().length === 0) { throw new Error("Missing userId")}

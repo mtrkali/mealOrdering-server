@@ -22,8 +22,8 @@ const getAllProviders = async(req: Request, res: Response)=>{
 
 const createProvider = async(req: Request, res: Response)=>{
     try {
-        const { userId, businessName } = req.body;
-        const result = await providerService.createProvider(userId, businessName);
+        const { userId, businessName, phone, address } = req.body;
+        const result = await providerService.createProvider(userId, businessName, phone, address);
         return res.status(200).json({
             success: true,
             message: "provider created successfully!",
