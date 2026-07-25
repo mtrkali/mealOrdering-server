@@ -27,7 +27,7 @@ app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: [process.env.APP_URL!, "https://your-frontend.vercel.app",],
     credentials: true,
     // methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     // allowedHeaders: [["Content-Type", "Authorization", "Cookie"],
