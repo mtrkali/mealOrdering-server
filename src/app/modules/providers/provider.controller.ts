@@ -19,6 +19,24 @@ const getAllProviders = async(req: Request, res: Response)=>{
     }
 }
 
+const getSingleProvider = async(req: Request, res: Response)=>{
+    try {
+        const {providerId} = req.params
+        const result = await providerService.getSingleProvider(providerId as string);
+        return res.status(200).json({
+            success: true,
+            message: "provider get success!",
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong  getSingleProvider controller",
+            details: error,
+        })
+    }
+}
+
 
 const createProvider = async(req: Request, res: Response)=>{
     try {
@@ -40,6 +58,24 @@ const createProvider = async(req: Request, res: Response)=>{
 
 
 
+const getProviderMeals = async(req: Request, res: Response)=>{
+    try {
+        const {providerId} = req.params
+        const result = await providerService.getProviderMeals(providerId as string);
+        return res.status(200).json({
+            success: true,
+            message: "provider meals get success!",
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong  getProviderMeals controller",
+            details: error,
+        })
+    }
+}
+
 export const providerController = {
-    getAllProviders, createProvider
+    getAllProviders, createProvider, getSingleProvider,getProviderMeals,
 }

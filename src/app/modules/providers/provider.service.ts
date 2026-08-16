@@ -8,6 +8,15 @@ const getAllProviders = async() =>{
     })
 }
 
+const getSingleProvider = async(providerId: string) =>{
+    const isExistPoriver = await prisma.providerProfile.findFirst({where: {id: providerId}})
+    if(!isExistPoriver) throw new Error("provider is not exists")
+    return await prisma.providerProfile.findUnique({
+      where: {id: providerId},
+      include: {user: true}
+})
+}
+
 
 const createProvider = async(userId: string, businessName: string, phone: string, address: string) => {
     return await prisma.providerProfile.create({
@@ -20,7 +29,15 @@ const createProvider = async(userId: string, businessName: string, phone: string
     })
 }
 
+const getProviderMeals = async(providerId: string) => {
+    const isExistPoriver = await prisma.providerProfile.findFirst({where: {id: providerId}})
+    if(!isExistPoriver) throw new Error("provider is not exists")
+    return await prisma.meal.findMany({where: {providerId}})
+}
+
 export const providerService = {
     getAllProviders,
-    createProvider
+    createProvider,
+    getSingleProvider,
+    getProviderMeals,
 }

@@ -14,4 +14,14 @@ router.post(
     providerController.createProvider
 )
 
+router.get(
+    "/:providerId",
+    providerController.getSingleProvider
+)
+
+router.get(
+    "/:providerId/meals",
+    providerController.getProviderMeals
+)
+
 export const providerRouter = router
