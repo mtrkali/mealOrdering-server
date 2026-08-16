@@ -37,7 +37,8 @@ const getSingleOrders  = async(req: Request, res:Response)=>{
 
 const createOrder  = async(req: Request, res:Response)=>{
     try {
-         const result = await orderService.createOrder(req.body);
+        const {id: userId} = req.user;
+         const result = await orderService.createOrder(userId, req.body);
          res.status(201).json({
              message: " order create success ",
              data: result,

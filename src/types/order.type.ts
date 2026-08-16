@@ -1,6 +1,10 @@
-export type Order  = {
-    id: string
-    name: string,
-    totalPrice: number,
+export interface createOrderType{
     userId: string,
+    orderData: {
+        address: string,
+        items: {
+            mealId: string,
+            quantity: number,
+        }[]
+    }
 }

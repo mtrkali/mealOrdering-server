@@ -1,6 +1,7 @@
 import { create } from "node:domain";
 import { Prisma } from "../../../generated/client";
 import { prisma } from "../../../lib/prisma";
+import { createOrderType } from "../../../types/order.type";
 
 const getAllOrders = async() =>{
     const totalOrders = await prisma.order.count();
@@ -17,24 +18,107 @@ const getAllOrders = async() =>{
     return {total: totalOrders, data: orders}
 }
 
-const createOrder = async (orderData: any) => {
-    const {items, ...order} = orderData;
-    return await prisma.order.create({
-        data: {
-            ...order,
-            items: {
-                create: items.map((item: any) => ({
-                    mealId: item.mealId,
-                    quantity: item.quantity,
-                    price: item.price,
-                }))
-            }
-        },
+const createOrder = async (
+  userId: string,
+  orderData: {
+    address: string;
+    items: {
+      mealId: string;
+      quantity: number;
+    }[];
+  }
+) => {
+  const { address, items } = orderData;
+
+  if (!address?.trim()) {
+    throw new Error("Delivery address is required");
+  }
+
+  if (!items || items.length === 0) {
+    throw new Error("Order must contain at least one meal");
+  }
+
+  // Prevent duplicate meal IDs
+  const mealIds = [...new Set(items.map((item) => item.mealId))];
+
+  if (mealIds.length !== items.length) {
+    throw new Error("Duplicate meals are not allowed in the same order");
+  }
+
+  // Validate quantities
+  for (const item of items) {
+    if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+      throw new Error("Quantity must be a positive integer");
+    }
+  }
+
+  // Get actual meals from database
+  const meals = await prisma.meal.findMany({
+    where: {
+      id: {
+        in: mealIds,
+      },
+    },
+    select: {
+      id: true,
+      price: true,
+      title: true,
+    },
+  });
+
+  // Check all requested meals exist
+  if (meals.length !== mealIds.length) {
+    const foundMealIds = new Set(meals.map((meal) => meal.id));
+
+    const missingMeals = mealIds.filter(
+      (mealId) => !foundMealIds.has(mealId)
+    );
+
+    throw new Error(
+      `Some meals were not found: ${missingMeals.join(", ")}`
+    );
+  }
+
+  const mealMap = new Map(
+    meals.map((meal) => [meal.id, meal])
+  );
+
+  // Calculate total using DB prices
+  const orderItems = items.map((item) => {
+    const meal = mealMap.get(item.mealId)!;
+
+    return {
+      mealId: meal.id,
+      quantity: item.quantity,
+      price: meal.price,
+    };
+  });
+
+  const totalPrice = orderItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const order = await prisma.order.create({
+    data: {
+      userId,
+      address: address.trim(),
+      totalPrice,
+      items: {
+        create: orderItems,
+      },
+    },
+    include: {
+      items: {
         include: {
-            items: true,
-        }
-    })
-}
+          meal: true,
+        },
+      },
+    },
+  });
+
+  return order;
+};
 
 const getSingleOrder = async(orderId: string) =>{
     return await prisma.order.findUnique({
