@@ -34,7 +34,10 @@ export const checkAuth =
       if(authRoles.length && !authRoles.includes(req.user.role)){
         return res.status(403).json({
           success: false,
-          message: "you have not permission access this resource"
+          message: "you have not permission access this resource",
+          role: req.user.role,
+          reqUserRole: req.user.role,
+          authRolesss: authRoles,
         })
       }
       

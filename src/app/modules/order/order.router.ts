@@ -5,6 +5,8 @@ import { orderController } from "./order.controller";
 
 const router = Router()
 
+
+
 // customer create an order 
 router.post(
     "/",
@@ -24,6 +26,13 @@ router.get(
     "/me",
     checkAuth(UserRole.CUSTOMER),
     orderController.getUsersOrder
+)
+
+// provider gets all orders of his meals
+router.get(
+    "/provider",
+    checkAuth(UserRole.PROVIDER),
+    orderController.getProviderOrders
 )
 
 // Customer get own single Order
@@ -53,5 +62,7 @@ router.delete(
     checkAuth(UserRole.ADMIN,UserRole.CUSTOMER),
     orderController.deleteOrder
 )
+
+
 
 export const  orderRouter: Router = router;

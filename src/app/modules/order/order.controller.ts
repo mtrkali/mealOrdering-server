@@ -55,7 +55,15 @@ const createOrder  = async(req: Request, res:Response)=>{
 const updateOrder = async(req: Request, res:Response)=>{
     try {
         const{orderId} = req.params;
-         const result = await orderService.updateOrder(orderId as string, req.body);
+        const {id: userId, role} = req.user;
+        const {status} = req.body;
+        if(!status) {
+            return res.status(400).json({
+                success: false,
+                message: "order status is required",
+            })
+        }
+         const result = await orderService.updateOrder(orderId as string, userId as string, role as string, status);
          res.status(201).json({
              message: "update order success",
              data: result,
@@ -122,6 +130,24 @@ const getUserSingleOrder = async(req: Request, res: Response) => {
     }
 }
 
+
+const getProviderOrders = async (req: Request, res: Response) => {
+    try {
+        const { id: userId } = req.user;
+        const orders = await orderService.getProviderOrders(userId as string);
+        res.status(200).json({
+            message: "Provider orders retrieved successfully",
+            totalOrders: orders.length,
+            data: orders,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            message: "Something went wrong from getProviderOrders controller",
+            error: error.message,
+        });
+    }
+}
+
 export const orderController = {
     getAllOrders, 
     getSingleOrders, 
@@ -130,4 +156,5 @@ export const orderController = {
     deleteOrder,
     getUsersOrder,
     getUserSingleOrder,
+    getProviderOrders,
 }
