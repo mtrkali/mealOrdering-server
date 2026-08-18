@@ -1,43 +1,65 @@
-import express from "express"
+import express from "express";
 import { mealsController } from "./meals.controller";
 import { checkAuth, UserRole } from "../../middleware/auth";
 
-
 const router = express.Router();
 
+/*
+|--------------------------------------------------------------------------
+| Provider Routes
+|--------------------------------------------------------------------------
+*/
+
+// Get provider's own meals
 router.get(
-    "/", 
+    "/self",
+    checkAuth(UserRole.PROVIDER),
+    mealsController.getMyMeals
+);
+
+// Create a meal
+router.post(
+    "/",
+    checkAuth(UserRole.PROVIDER),
+    mealsController.createMeal
+);
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
+// Get all meals
+router.get(
+    "/",
     mealsController.getAllMeals
 );
 
-router.get(
-    "/self",
-     checkAuth(UserRole.PROVIDER, UserRole.ADMIN, UserRole.CUSTOMER),
-     mealsController.getMyMeals 
-)
-
+// Get single meal
 router.get(
     "/:mealId",
     mealsController.getMealById
 );
 
-router.post(
-    "/", 
-    checkAuth(UserRole.PROVIDER, UserRole.ADMIN, UserRole.CUSTOMER),
-    mealsController.createMeal
-)
+/*
+|--------------------------------------------------------------------------
+| Provider Routes - Meal Management
+|--------------------------------------------------------------------------
+*/
 
+// Update own meal
 router.patch(
     "/:mealId",
-     checkAuth(UserRole.PROVIDER, UserRole.ADMIN, UserRole.CUSTOMER),
-     mealsController.updateMeal
-)
+    checkAuth(UserRole.PROVIDER),
+    mealsController.updateMeal
+);
 
+// Delete own meal
 router.delete(
     "/:mealId",
-     checkAuth(UserRole.PROVIDER, UserRole.ADMIN, UserRole.CUSTOMER),
-     mealsController.deleteMeal 
-)
-
+    checkAuth(UserRole.PROVIDER),
+    mealsController.deleteMeal
+);
 
 export const mealsRouter = router;

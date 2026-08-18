@@ -2,28 +2,28 @@ import { Prisma } from "../../../generated/client";
 import { prisma } from "../../../lib/prisma";
 
 const getAllMeals = async (query: any) => {
-    const {cuisine, dietary, minPrice, maxPrice, providerId} = query;
-    const whereCondition: any  = {}
-    if(cuisine) whereCondition.cuisine = cuisine;
-    if(dietary) whereCondition.dietary = {hasSome: Array.isArray(dietary) ? dietary : [dietary]};
-    if(minPrice || maxPrice){
+    const { cuisine, dietary, minPrice, maxPrice, providerId } = query;
+    const whereCondition: any = {}
+    if (cuisine) whereCondition.cuisine = cuisine;
+    if (dietary) whereCondition.dietary = { hasSome: Array.isArray(dietary) ? dietary : [dietary] };
+    if (minPrice || maxPrice) {
         whereCondition.price = {};
-        if(minPrice) whereCondition.price.gte = Number(minPrice);
-        if(maxPrice) whereCondition.price.lte = Number(maxPrice);
+        if (minPrice) whereCondition.price.gte = Number(minPrice);
+        if (maxPrice) whereCondition.price.lte = Number(maxPrice);
     }
-    if(providerId) whereCondition.providerId = providerId;
+    if (providerId) whereCondition.providerId = providerId;
     return await prisma.meal.findMany({
-       where: whereCondition,
-       include: {
-        provider: true,
-        category: true,
-       }
+        where: whereCondition,
+        include: {
+            provider: true,
+            category: true,
+        }
     });
 }
 
-const getMealById = async(id: string) =>{
+const getMealById = async (id: string) => {
     return await prisma.meal.findUnique({
-        where: {id},
+        where: { id },
         include: {
             provider: true,
             category: true,
@@ -32,82 +32,103 @@ const getMealById = async(id: string) =>{
 }
 
 
-const createMeal = async( data: Prisma.MealCreateInput | any, userId:string ) => {
+const createMeal = async (data: Prisma.MealCreateInput | any, userId: string) => {
     const provider = await prisma.providerProfile.findUnique({
-        where: {userId: userId}
+        where: { userId }
     })
-    if(!provider){throw new Error ("provider not found")}
+    if (!provider) { throw new Error("provider not found") }
+
+    // request body data validation
+    const { providerId, id, createdAt, updatedAt, ...mealData } = data;
+
+    if (!mealData.title) throw new Error("Meal title is required");
+    if (mealData.price === undefined || Number(mealData.price) < 0) throw new Error("valid meal price required");
+    if (!mealData.categoryId) throw new Error("Category is required");
+
 
     const result = await prisma.meal.create({
         data: {
-            ...(data as any),
+            ...mealData,
+            price: Number(mealData.price),
             providerId: provider.id,
         }
     })
-    return result ;
+    return result;
 }
 
 const updateMeal = async (
-    mealId: string, 
-    data: Prisma.MealUpdateInput | any, 
+    mealId: string,
+    data: Prisma.MealUpdateInput | any,
     userId: string) => {
-const provider = await prisma.providerProfile.findUnique({
-    where: {userId},
-});
-if(!provider){
-    throw new Error ("provider not found")
-}
-const meal = await prisma.meal.findUnique({
-    where: {id: mealId},
-});
-if(!meal || meal.providerId !== provider.id){throw new Error ("Unathorized")}
+    const provider = await prisma.providerProfile.findUnique({
+        where: { userId },
+    });
+    if (!provider) throw new Error("provider not found")
+    const meal = await prisma.meal.findUnique({ where: { id: mealId } });
+    if (!meal) throw new Error("Meal not found");
+    if (meal.providerId !== provider.id) throw new Error("your are not authorized to update this meal");
 
-return prisma.meal.update({
-    where: {id: mealId},
-    data: data,
-})
+    const { providerId, id, createdAt, updatedAt, ...mealData } = data;
+    if (mealData.price !== undefined && Number(mealData.price) < 0) throw new Error("price cannot be negative");
+
+    return prisma.meal.update({
+        where: { id: mealId },
+        data: {
+            ...mealData,
+            ...(mealData.price !== undefined && { price: Number(mealData.price), }),
+        },
+    })
 }
 
 
 const deleteMeal = async (mealId: string, userId: string) => {
     const provider = await prisma.providerProfile.findUnique({
-        where: {userId},
+        where: { userId },
     });
 
-    if(!provider) {throw new Error("provider not found")};
-    
+    if (!provider) { throw new Error("provider not found") };
+
     const meal = await prisma.meal.findUnique({
-        where: {id: mealId},
+        where: { id: mealId },
     });
 
-    if(!meal || meal.providerId !== provider.id){throw new Error("Unauthorized")}
+    if (!meal) {
+        throw new Error("Meal not found");
+    }
+
+    if (meal.providerId !== provider.id) {
+        throw new Error(
+            "You are not authorized to delete this meal"
+        );
+    }
 
     return prisma.meal.delete({
-        where: {id: mealId},
+        where: { id: mealId },
     });
 
 };
 
 const getMyMeals = async (userId: string) => {
     const provider = await prisma.providerProfile.findUnique({
-        where: {userId},
+        where: { userId },
     });
 
-    if(!provider){throw new Error("provider not found")}
+    if (!provider) { throw new Error("provider not found") }
 
     //total meals of the provider
-    const totalMeals = await prisma.meal.count({where: {providerId: provider.id}});
-    
-    return { 
-        totalMeals,
-        meals: await prisma.meal.findMany({
-            where: {providerId: provider.id},
-        }),
-     };
-    
+    return await prisma.meal.findMany({
+            where: { providerId: provider.id },
+            include: { category: true },
+            orderBy: { createdAt: 'desc' }
+        });
 }
 
 
 export const mealService = {
-    getAllMeals, getMealById, createMeal, updateMeal, deleteMeal, getMyMeals 
+    getAllMeals,
+    getMealById, 
+    createMeal, 
+    updateMeal, 
+    deleteMeal, 
+    getMyMeals
 }

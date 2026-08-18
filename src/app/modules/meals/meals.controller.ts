@@ -5,9 +5,13 @@ import { mealService } from "./meals.service";
 const getAllMeals = async (req: Request, res: Response) => {
     try {
         const meals = await mealService.getAllMeals(req.query);
-        res.status(200).json(meals);
+        res.status(200).json({
+            success: true,
+            data: meals
+        });
     } catch (error: any) {
         res.status(500).json({
+            success: false,
             message: "Something went wrong in getAllmeals controller",
             error: error.message,
         })
@@ -16,73 +20,128 @@ const getAllMeals = async (req: Request, res: Response) => {
 
 const getMealById = async (req: Request, res: Response) => {
     try {
-        const {mealId} = req.params;
+        const { mealId } = req.params;
         const meal = await mealService.getMealById(mealId as string);
-        res.status(200).json(meal);
+        if (!meal) throw new Error("Meal not found");
+        res.status(200).json({
+            success: true,
+            data: meal
+        });
     } catch (error: any) {
         res.status(500).json({
-            message: "Something went wrong",
+            success: false,
+
             error: error.message,
         })
     }
 }
 
-const createMeal = async (req: Request, res: Response)=>{
+const createMeal = async (req: Request, res: Response) => {
     try {
-        const user = req.user;
-        const result = await mealService.createMeal(req.body, user?.id as string)
-        res.status(201).json(result)
-    } catch (error: any) {
-         res.status(500).json({
-            message: "Something went wrong",
-            error: error.message,
-        })
-    }
-}
-
-const updateMeal  = async (req: Request, res: Response)=>{
-    try {
-        const user = req.user;
-        const {mealId} = req.params
-        const result = await mealService.updateMeal(mealId as string ,req.body, user?.id as string)
-        res.status(201).json(result)
-    } catch (error: any) {
-         res.status(500).json({
-            message: "Something went wrong",
-            error: error.message,
-        })
-    }
-}
-
-
-const deleteMeal   = async (req: Request, res: Response)=>{
-    try {
-        const user = req.user;
-        const {mealId} = req.params
-        const result = await mealService.deleteMeal(mealId as string, user?.id as string)
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({
+                message: "Unauthorized",
+            });
+        }
+        const result = await mealService.createMeal(req.body, userId as string)
         res.status(201).json({
-            message: "meal delete success!!",
+            success: true,
+            message: "meal created successfully",
+            data: result
+        })
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong while creating the meal",
+            error: error.message,
+        })
+    }
+}
+
+const updateMeal = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({
+                message: "Unauthorized",
+            });
+        }
+        const { mealId } = req.params
+        const result = await mealService.updateMeal(mealId as string, req.body, userId as string)
+        res.status(200).json({
+            success: true,
+            message: "meal updated successfully",
+            data: result
+        })
+    } catch (error: any) {
+        const statusCode =
+            error.message.includes("not authorized")
+                ? 403
+                : error.message.includes("not found")
+                    ? 404
+                    : 400;
+        res.status(statusCode).json({
+            success: false,
+            message: "Something went wrong while updating the meal",
+            error: error.message,
+        })
+    }
+}
+
+
+const deleteMeal = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        const { mealId } = req.params
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            })
+        }
+        const result = await mealService.deleteMeal(mealId as string, userId as string)
+        res.status(200).json({
+            success: true,
+            message: "meal deleted successfully",
             meal: result,
         })
     } catch (error: any) {
-         res.status(500).json({
-            message: "Something went wrong",
+        const statusCode =
+            error.message.includes("not authorized")
+                ? 403
+                : error.message.includes("not found")
+                    ? 404
+                    : 400;
+
+        res.status(statusCode).json({
+            success: false,
+            message: "Something went wrong while deleting the meal",
             error: error.message,
         })
     }
 }
 
 
-const getMyMeals = async (req: Request, res: Response)=>{
+const getMyMeals = async (req: Request, res: Response) => {
     try {
-        const user = req.user;
-        const result = await mealService.getMyMeals(user?.id as string)
-        res.status(201).json({
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+        const result = await mealService.getMyMeals(userId as string)
+        res.status(200).json({
+            success: true,
             message: "all meal feached success!!",
-            meal: result,
+            totalMeals: result.length,
+            meals: result,
         })
     } catch (error: any) {
-         res.status(500).json({
+        res.status(400).json({
+            success: false,
             message: "Something went wrong from getMyMeals controller",
             error: error.message,
         })
@@ -90,10 +149,10 @@ const getMyMeals = async (req: Request, res: Response)=>{
 }
 
 export const mealsController = {
-    getAllMeals, 
-    getMealById, 
-    createMeal, 
-    updateMeal, 
+    getAllMeals,
+    getMealById,
+    createMeal,
+    updateMeal,
     deleteMeal,
     getMyMeals,
 }
