@@ -145,6 +145,7 @@ model Order {
   status     OrderStatus @default(PLACED)
   user       User        @relation(fields: [userId], references: [id])
   createdAt  DateTime    @default(now())
+  review     Review?
   items      OrderItem[]
 }
 
@@ -168,6 +169,7 @@ model Review {
   user   User   @relation(fields: [userId], references: [id])
   
   orderId String @unique
+  order Order @relation(fields: [orderId], references: [id])
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
