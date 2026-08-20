@@ -166,7 +166,7 @@ const updateOrder = async (
     status: Prisma.OrderUpdateInput["status"]
 ) => {
     const order = await prisma.order.findUnique({
-        where: {id: orderId},
+        where: { id: orderId },
 
         include: {
             items: {
@@ -181,7 +181,7 @@ const updateOrder = async (
         },
     });
 
-    if(!order) throw new Error("Order not found");
+    if (!order) throw new Error("Order not found");
     // Admin can update any order
     if (role === UserRole.ADMIN) {
         const data: Prisma.OrderUpdateInput = status === undefined ? {} : { status };
@@ -197,12 +197,12 @@ const updateOrder = async (
         where: { userId },
         select: { id: true }
     });
-    if(!provider) throw new Error("Provider profile not found for this user");
+    if (!provider) throw new Error("Provider profile not found for this user");
     // check whether this order contains this provider's meal
     const owsMeal = order.items.some(item => item.meal.providerId === provider.id);
     if (!owsMeal) throw new Error("you don't have permission to update this order");
     return prisma.order.update({
-        where: {id: orderId},
+        where: { id: orderId },
         data: status === undefined ? {} : { status },
     })
 }
@@ -265,6 +265,7 @@ const getUsersOrder = async (userId: string) => {
 }
 
 const getUserSingleOrder = async (userId: string, orderId: string) => {
+
     return await prisma.order.findFirst({
         where: {
             id: orderId,
@@ -317,18 +318,18 @@ const getProviderOrders = async (userId: string) => {
                 include: {
                     meal: {
                         select: {
-                           id: true,
-                           title: true,
-                           image: true,
-                           price: true,
-                           cuisine: true, 
+                            id: true,
+                            title: true,
+                            image: true,
+                            price: true,
+                            cuisine: true,
                         }
                     }
                 }
             }
         },
 
-        orderBy: {createdAt: "desc"},
+        orderBy: { createdAt: "desc" },
     });
 
     return orders;
