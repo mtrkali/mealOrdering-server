@@ -1,4 +1,4 @@
-import  { Router } from "express"
+import { Router } from "express"
 import { userController } from "./user.controller";
 import { checkAuth, UserRole } from "../../middleware/auth";
 
@@ -24,10 +24,10 @@ router.delete(
 
 
 router.patch(
-    "/",
+    "/:userId",
     checkAuth(UserRole.ADMIN),
     userController.updateUser
 )
-   
+
 
 export const userRouter: Router = router;
