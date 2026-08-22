@@ -55,6 +55,14 @@ const updateUser = async (req: Request, res: Response) => {
 const deleteUser = async (req: Request, res: Response) => {
     try {
         const { userId } = req.params;
+
+        if (req.user?.id === userId) {
+            return res.status(400).json({
+                success: false,
+                message: "Admin cannot delete their own account.",
+
+            })
+        }
         const result = await userService.deleteUser(userId as string)
         res.status(201).json({
             message: "single user delete success!!",
