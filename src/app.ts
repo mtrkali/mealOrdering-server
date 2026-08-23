@@ -12,6 +12,7 @@ import { mealsRouter } from "./app/modules/meals/meals.router";
 import { providerApplicationRouter } from "./app/modules/providerApplicationRoute/providerApp.router";
 import { providerRouter } from "./app/modules/providers/provider.router";
 import { reviewRouter } from "./app/modules/review/review.router";
+import { adminRouter } from "./app/modules/admin/admin.router";
 
 const app: Application = express();
 app.set("query parser", (str: string) => qs.parse(str));
@@ -56,6 +57,7 @@ app.use("/api/v1/meals", mealsRouter);
 app.use("/api/v1/beprovider", providerApplicationRouter);
 app.use("/api/v1/providers", providerRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/admin", adminRouter);
 
 
 // Basic route

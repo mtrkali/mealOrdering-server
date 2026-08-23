@@ -6,7 +6,7 @@ const getAllUsers = async (req: Request, res: Response) => {
         const result = await userService.getAllUsers()
         res.status(201).json({
             message: "all user get success!!",
-            totalUser: result.length,
+            totalUsers: result.length,
             data: result,
         })
     } catch (error: any) {

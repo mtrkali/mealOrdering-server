@@ -1,12 +1,10 @@
-import { create } from "node:domain";
+
 import { Prisma } from "../../../generated/client";
 import { prisma } from "../../../lib/prisma";
-import { createOrderType } from "../../../types/order.type";
 import { UserRole } from "../../middleware/auth";
 
 const getAllOrders = async () => {
-    const totalOrders = await prisma.order.count();
-    const orders = await prisma.order.findMany({
+    return await prisma.order.findMany({
         include: {
             user: true,
             items: {
@@ -16,7 +14,6 @@ const getAllOrders = async () => {
             },
         },
     });
-    return { total: totalOrders, data: orders }
 }
 
 const createOrder = async (
