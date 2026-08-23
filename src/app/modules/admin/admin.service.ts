@@ -1,3 +1,4 @@
+
 import { prisma } from "../../../lib/prisma"
 
 const getDashboardStats = async () => {
@@ -7,6 +8,13 @@ const getDashboardStats = async () => {
         totalMeals,
         totalProviders,
         revenueResult,
+
+
+        placeOrders,
+        preparingOrders,
+        readyOrders,
+        deliveredOrders,
+        cancelledOrders,
     ] = await Promise.all([
         prisma.user.count(),
         prisma.order.count(),
@@ -16,7 +24,12 @@ const getDashboardStats = async () => {
             _sum: {
                 totalPrice: true,
             }
-        })
+        }),
+        prisma.order.count({ where: { status: "PLACED" } }),
+        prisma.order.count({ where: { status: "PREPARING" } }),
+        prisma.order.count({ where: { status: "READY" } }),
+        prisma.order.count({ where: { status: "DELIVERED" } }),
+        prisma.order.count({ where: { status: "CANCELLED" } }),
     ])
 
     return {
@@ -25,6 +38,14 @@ const getDashboardStats = async () => {
         totalMeals,
         totalProviders,
         totalRevenue: revenueResult._sum.totalPrice ?? 0,
+
+        orderStatus: {
+            PLACED: placeOrders,
+            PREPARING: preparingOrders,
+            READY: readyOrders,
+            DELIVERED: deliveredOrders,
+            CANCELLED: cancelledOrders,
+        }
     };
 };
 
