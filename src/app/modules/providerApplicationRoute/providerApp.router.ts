@@ -11,6 +11,13 @@ router.post(
     providerApplicationController.createProviderApplicationController
 )
 
+// Admin gets all provider applications
+router.get(
+    "/",
+    checkAuth(UserRole.ADMIN),
+    providerApplicationController.getAllProviderApplications
+);
+
 router.patch(
     "/",
     checkAuth(UserRole.ADMIN),

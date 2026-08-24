@@ -40,9 +40,34 @@ const createProviderApplicationController = async (req: Request, res: Response) 
     }
 }
 
+const getAllProviderApplications = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const result =
+            await providerApplicationService.getAllProviderApplications();
+
+        return res.status(200).json({
+            success: true,
+            message: "Provider applications fetched successfully!",
+            totalApplications: result.length,
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message:
+                "Something went wrong while fetching provider applications",
+            error: error.message,
+        });
+    }
+};
+
 const approveBeProviderApplication = async (req: Request, res: Response) => {
     try {
-        const result = await providerApplicationService.approveBeProviderApplication(req.body)
+        const { applicationId } = req.body;
+        const result = await providerApplicationService.approveBeProviderApplication(applicationId)
         return res.status(200).json({
             success: true,
             message: "provider approve success",
@@ -57,7 +82,10 @@ const approveBeProviderApplication = async (req: Request, res: Response) => {
     }
 }
 
+
+
 export const providerApplicationController = {
     createProviderApplicationController,
-    approveBeProviderApplication
+    approveBeProviderApplication,
+    getAllProviderApplications,
 }
