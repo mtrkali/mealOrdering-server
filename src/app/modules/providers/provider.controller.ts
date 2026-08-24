@@ -2,7 +2,7 @@
 import type { Request, Response } from "express";
 import { providerService } from "./provider.service";
 
-const getAllProviders = async(req: Request, res: Response)=>{
+const getAllProviders = async (req: Request, res: Response) => {
     try {
         const result = await providerService.getAllProviders();
         return res.status(200).json({
@@ -19,9 +19,9 @@ const getAllProviders = async(req: Request, res: Response)=>{
     }
 }
 
-const getSingleProvider = async(req: Request, res: Response)=>{
+const getSingleProvider = async (req: Request, res: Response) => {
     try {
-        const {providerId} = req.params
+        const { providerId } = req.params
         const result = await providerService.getSingleProvider(providerId as string);
         return res.status(200).json({
             success: true,
@@ -38,7 +38,7 @@ const getSingleProvider = async(req: Request, res: Response)=>{
 }
 
 
-const createProvider = async(req: Request, res: Response)=>{
+const createProvider = async (req: Request, res: Response) => {
     try {
         const { userId, businessName, phone, address } = req.body;
         const result = await providerService.createProvider(userId, businessName, phone, address);
@@ -58,9 +58,9 @@ const createProvider = async(req: Request, res: Response)=>{
 
 
 
-const getProviderMeals = async(req: Request, res: Response)=>{
+const getProviderMeals = async (req: Request, res: Response) => {
     try {
-        const {providerId} = req.params
+        const { providerId } = req.params
         const result = await providerService.getProviderMeals(providerId as string);
         return res.status(200).json({
             success: true,
@@ -76,6 +76,26 @@ const getProviderMeals = async(req: Request, res: Response)=>{
     }
 }
 
+
+const updateProviders = async (req: Request, res: Response) => {
+    try {
+        const { providerId } = req.params
+        const { status } = req.body;
+        const result = await providerService.updateProviders(providerId as string, status);
+        return res.status(200).json({
+            success: true,
+            message: "provider update success!",
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong  updateProviders controller",
+            details: error,
+        })
+    }
+}
+
 export const providerController = {
-    getAllProviders, createProvider, getSingleProvider,getProviderMeals,
+    getAllProviders, createProvider, getSingleProvider, getProviderMeals, updateProviders
 }

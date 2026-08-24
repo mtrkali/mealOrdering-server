@@ -2,22 +2,31 @@ import type { Request, Response } from "express";
 import { providerApplicationService } from "./providerApp.service";
 import { Prisma } from "../../../generated/client";
 
-const createProviderApplicationController = async(req: Request, res: Response) =>{
+const createProviderApplicationController = async (req: Request, res: Response) => {
     try {
-        const {userId, businessName, phone, address} = req.body;
+        const { businessName, phone, address } = req.body;
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
         const inputData: Prisma.providerApplicationCreateInput = {
-           businessName,
-           phone,
-           address,
-           user: {
-            connect: {
-                id: userId
+            businessName,
+            phone,
+            address,
+            user: {
+                connect: {
+                    id: userId
+                }
             }
-           }
         }
         const result = await providerApplicationService.createProviderApplication(inputData)
 
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             message: "beProvider application success!!",
             data: result
@@ -31,7 +40,7 @@ const createProviderApplicationController = async(req: Request, res: Response) =
     }
 }
 
-const approveBeProviderApplication = async(req: Request, res: Response) =>{
+const approveBeProviderApplication = async (req: Request, res: Response) => {
     try {
         const result = await providerApplicationService.approveBeProviderApplication(req.body)
         return res.status(200).json({
@@ -49,6 +58,6 @@ const approveBeProviderApplication = async(req: Request, res: Response) =>{
 }
 
 export const providerApplicationController = {
-    createProviderApplicationController, 
+    createProviderApplicationController,
     approveBeProviderApplication
 }

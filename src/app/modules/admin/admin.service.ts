@@ -21,6 +21,7 @@ const getDashboardStats = async () => {
         prisma.meal.count(),
         prisma.providerProfile.count(),
         prisma.order.aggregate({
+            where: { status: { not: "CANCELLED" } },
             _sum: {
                 totalPrice: true,
             }
