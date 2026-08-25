@@ -36,6 +36,101 @@ const getProviderMeals = async (providerId: string) => {
     return await prisma.meal.findMany({ where: { providerId } })
 }
 
+const getProviderDashboarStats = async (userId: string) => {
+    const provider = await prisma.providerProfile.findUnique({
+        where: { userId },
+        select: {
+            id: true,
+        }
+    })
+    if (!provider) {
+        throw new Error("Provider profile not found");
+    }
+    const providerId = provider.id;
+
+    const [
+        totalMeals,
+        totalOrders,
+        revenueRasult,
+        placedOrders,
+        preparingOrders,
+        readyOrders,
+        deliveredOrders,
+        cancelledOrders
+    ] = await Promise.all([
+        prisma.meal.count({ where: { providerId } }),
+
+        // Total orders containing this provider's meals
+        prisma.order.count({
+            where: {
+                items: {
+                    some: {
+                        meal: {
+                            providerId,
+                        },
+                    },
+                },
+            },
+        }),
+
+        // Revenue from the provider's meals
+        prisma.orderItem.aggregate({
+            where: {
+                meal: { providerId }
+            },
+            _sum: {
+                price: true,
+            },
+        }),
+
+        // placed orders
+        prisma.order.count({
+            where: {
+                status: "PLACED",
+                items: {
+                    some: {
+                        meal: {
+                            providerId,
+                        }
+                    }
+                }
+            }
+        }),
+
+        // preparing order count 
+        prisma.order.count({
+            where: { status: "PREPARING", items: { some: { meal: { providerId } } } }
+        }),
+
+        // Ready order count
+        prisma.order.count({
+            where: { status: "READY", items: { some: { meal: { providerId } } } }
+        }),
+
+        // Delivered order count
+        prisma.order.count({
+            where: { status: "READY", items: { some: { meal: { providerId } } } }
+        }),
+
+        // Cancellled order count
+        prisma.order.count({
+            where: { status: "CANCELLED", items: { some: { meal: { providerId } } } }
+        }),
+    ])
+
+    return {
+        totalMeals,
+        totalOrders,
+        totalRevenue: revenueRasult._sum.price ?? 0,
+        orderStatus: {
+            placed: placedOrders,
+            ready: readyOrders,
+            preparing: preparingOrders,
+            delivered: deliveredOrders,
+            cancelled: cancelledOrders,
+        }
+    }
+}
 
 const updateProviders = async (providerId: string, status: ProviderProfileStatus) => {
     const isExistPoriver = await prisma.providerProfile.findFirst({ where: { id: providerId } })
@@ -47,10 +142,13 @@ const updateProviders = async (providerId: string, status: ProviderProfileStatus
     })
 }
 
+
+
 export const providerService = {
     getAllProviders,
     createProvider,
     getSingleProvider,
     getProviderMeals,
     updateProviders,
+    getProviderDashboarStats,
 }

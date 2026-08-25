@@ -2,6 +2,8 @@
 import type { Request, Response } from "express";
 import { providerService } from "./provider.service";
 
+
+
 const getAllProviders = async (req: Request, res: Response) => {
     try {
         const result = await providerService.getAllProviders();
@@ -76,6 +78,29 @@ const getProviderMeals = async (req: Request, res: Response) => {
     }
 }
 
+const getDashboardStats = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+        const result = await providerService.getProviderDashboarStats(userId as string);
+        return res.status(200).json({
+            success: true,
+            message: "Provider dashboard stats retrieved successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while getting provider dashboard stats",
+            error: error.message,
+        });
+    }
+}
 
 const updateProviders = async (req: Request, res: Response) => {
     try {
@@ -97,5 +122,10 @@ const updateProviders = async (req: Request, res: Response) => {
 }
 
 export const providerController = {
-    getAllProviders, createProvider, getSingleProvider, getProviderMeals, updateProviders
+    getAllProviders,
+    createProvider,
+    getSingleProvider,
+    getProviderMeals,
+    updateProviders,
+    getDashboardStats,
 }

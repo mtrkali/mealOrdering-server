@@ -25,6 +25,13 @@ router.get(
     providerController.getProviderMeals
 )
 
+// provider dashboard statistic
+router.get(
+    "/dashboard/stats",
+    checkAuth(UserRole.PROVIDER),
+    providerController.getDashboardStats
+)
+
 router.patch(
     "/:providerId",
     checkAuth(UserRole.ADMIN),
