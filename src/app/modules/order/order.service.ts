@@ -331,6 +331,56 @@ const getProviderOrders = async (userId: string) => {
 
     return orders;
 }
+
+const getProviderSingleOrder = async (userId: string, orderId: string) => {
+    const provider = await prisma.providerProfile.findUnique({
+        where: { userId },
+        select: { id: true }
+    })
+    if (!provider) throw new Error("provider profile not found for user");
+
+    const order = await prisma.order.findFirst({
+        where: {
+            id: orderId,
+            items: {
+                some: {
+                    meal: {
+                        providerId: provider.id
+                    }
+                }
+            }
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    image: true,
+                },
+            },
+            items: {
+                where: {
+                    meal: { providerId: provider.id }
+                },
+                include: {
+                    meal: {
+                        select: {
+                            id: true,
+                            title: true,
+                            image: true,
+                            price: true,
+                            cuisine: true,
+                        }
+                    }
+                }
+            }
+        }
+    })
+    if (!order) throw new Error("Order not found or you don't have access to this order")
+    return order;
+}
 export const orderService = {
     getAllOrders,
     createOrder,
@@ -340,4 +390,5 @@ export const orderService = {
     getUsersOrder,
     getUserSingleOrder,
     getProviderOrders,
+    getProviderSingleOrder,
 }
