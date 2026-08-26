@@ -209,6 +209,7 @@ const deleteOrder = async (orderId: string, userId: string, role: string) => {
 
     const isExistOrder = await prisma.order.findFirst({ where: { id: orderId } });
     if (!isExistOrder) { throw new Error("Order is not exist") };
+    if (role === "CUSTOMER" && isExistOrder.status !== "PLACED") throw new Error("Only placed order can be delete")
     if (isExistOrder.userId !== userId && role !== "ADMIN") throw new Error("you have not access!!")
 
     return await prisma.$transaction(async (tx) => {
