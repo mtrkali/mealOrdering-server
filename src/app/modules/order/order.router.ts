@@ -35,6 +35,12 @@ router.get(
     orderController.getProviderOrders
 )
 
+router.get(
+    "/provider/:orderId",
+    checkAuth(UserRole.PROVIDER),
+    orderController.getProviderSingleOrder
+);
+
 // Customer get own single Order
 router.get(
     "/me/:orderId",
@@ -48,7 +54,7 @@ router.get(
     checkAuth(UserRole.ADMIN),
     orderController.getSingleOrders
 )
-   
+
 // provider/Admin updates order status
 router.patch(
     "/:orderId",
@@ -59,10 +65,10 @@ router.patch(
 // Customer /Admin deltes order
 router.delete(
     "/:orderId",
-    checkAuth(UserRole.ADMIN,UserRole.CUSTOMER),
+    checkAuth(UserRole.ADMIN, UserRole.CUSTOMER),
     orderController.deleteOrder
 )
 
 
 
-export const  orderRouter: Router = router;
+export const orderRouter: Router = router;

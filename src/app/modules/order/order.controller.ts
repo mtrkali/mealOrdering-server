@@ -149,6 +149,34 @@ const getProviderOrders = async (req: Request, res: Response) => {
     }
 }
 
+
+
+const getProviderSingleOrder = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const { id: userId } = req.user;
+        const { orderId } = req.params;
+
+        const order =
+            await orderService.getProviderSingleOrder(
+                userId as string,
+                orderId as string
+            );
+
+        res.status(200).json({
+            message: "Provider single order retrieved successfully",
+            data: order,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            message:
+                "Something went wrong from getProviderSingleOrder controller",
+            error: error.message,
+        });
+    }
+};
 export const orderController = {
     getAllOrders,
     getSingleOrders,
@@ -158,4 +186,5 @@ export const orderController = {
     getUsersOrder,
     getUserSingleOrder,
     getProviderOrders,
+    getProviderSingleOrder
 }
