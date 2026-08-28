@@ -16,6 +16,18 @@ router.post(
 )
 
 router.get(
+    "/me",
+    checkAuth(UserRole.PROVIDER),
+    providerController.getMyProviderProfile
+);
+
+router.patch(
+    "/me",
+    checkAuth(UserRole.PROVIDER),
+    providerController.updateMyProviderProfile
+);
+
+router.get(
     "/:providerId",
     providerController.getSingleProvider
 )

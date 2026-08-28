@@ -142,7 +142,68 @@ const updateProviders = async (providerId: string, status: ProviderProfileStatus
     })
 }
 
+const getMyProviderProfile = async (userId: string) => {
+    const provider = await prisma.order.findUnique({
+        where: { id: userId },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    image: true,
+                    status: true,
+                    role: true,
+                }
+            }
+        }
+    })
+    if (!provider) throw new Error("Provider not found");
+    return provider;
+}
 
+const updateMyProviderProfile = async (
+    userId: string,
+    updateData: {
+        businessName?: string,
+        phone?: string,
+        address?: string,
+    }
+) => {
+    const provider = await prisma.providerProfile.findUnique({
+        where: { userId },
+    });
+
+    if (!provider) {
+        throw new Error("Provider profile not found");
+    }
+
+    const data: {
+        businessName?: string,
+        phone?: string,
+        address?: string
+    } = {};
+
+    if (updateData.businessName !== undefined) {
+        const businessName = updateData.businessName?.trim();
+        if (!businessName) throw new Error("BusinessName is required");
+        data.businessName = businessName;
+    }
+
+    if (updateData.phone !== undefined) {
+        const phone = updateData.phone?.trim();
+        if (!phone) throw new Error("phone is required");
+        data.phone = phone;
+    }
+
+    if (updateData.address !== undefined) {
+        const address = updateData.address?.trim();
+        if (!address) throw new Error("address is required");
+        data.address = address;
+    }
+
+}
 
 export const providerService = {
     getAllProviders,
@@ -151,4 +212,6 @@ export const providerService = {
     getProviderMeals,
     updateProviders,
     getProviderDashboarStats,
+    getMyProviderProfile,
+    updateMyProviderProfile,
 }

@@ -263,7 +263,8 @@ const getUsersOrder = async (userId: string) => {
 }
 
 const getUserSingleOrder = async (userId: string, orderId: string) => {
-
+    const order = await prisma.order.findUnique({ where: { id: orderId } })
+    if (order?.userId !== userId) throw new Error("you have not access this resource")
     return await prisma.order.findFirst({
         where: {
             id: orderId,

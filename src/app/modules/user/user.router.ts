@@ -11,6 +11,18 @@ router.get(
 )
 
 router.get(
+    "/me",
+    checkAuth(UserRole.CUSTOMER, UserRole.PROVIDER, UserRole.ADMIN),
+    userController.getMyProfile
+);
+
+router.patch(
+    "/me",
+    checkAuth(UserRole.CUSTOMER, UserRole.PROVIDER, UserRole.ADMIN),
+    userController.updateMyProfile
+);
+
+router.get(
     "/:userId",
     checkAuth(UserRole.ADMIN),
     userController.getSingleUser

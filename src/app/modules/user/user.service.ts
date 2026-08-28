@@ -1,5 +1,6 @@
 
 import { Prisma } from "../../../generated/client";
+import { UserUpdateInput } from "../../../generated/models";
 import { prisma } from "../../../lib/prisma"
 
 const getAllUsers = async () => {
@@ -40,9 +41,62 @@ const deleteUser = async (id: string) => {
 }
 
 
+const getMyProfile = async (userId: string) => {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            image: true,
+            role: true,
+            status: true,
+            createdAt: true,
+        }
+    })
+    if (!user) throw new Error("user not found!")
+    return user;
+}
+
+const updateMyProfile = async (
+    userId: string,
+    updateData: {
+        name: string,
+        phone: string,
+        image: string
+    }) => {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) throw new Error("user not found!");
+    const data: UserUpdateInput = {}
+    if (updateData.name !== undefined) {
+        const name = updateData.name.trim();
+        if (!name) throw new Error("Name connot empty")
+        data.name = name;
+    }
+    if (updateData.phone !== undefined) data.phone = updateData.phone.trim();
+    if (updateData.image !== undefined) data.image = updateData.image.trim();
+
+    return await prisma.user.update({
+        where: { id: userId },
+        data,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            image: true,
+            role: true,
+            status: true,
+        }
+    })
+}
+
 export const userService = {
     getAllUsers,
     getSingleUser,
     updateUser,
     deleteUser,
+    updateMyProfile,
+    getMyProfile,
 }

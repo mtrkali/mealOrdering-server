@@ -121,6 +121,74 @@ const updateProviders = async (req: Request, res: Response) => {
     }
 }
 
+const getMyProviderProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
+        const result = await providerService.getMyProviderProfile(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Provider profile retrieved successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get provider profile",
+            error: error.message,
+        });
+    }
+};
+
+
+const updateMyProviderProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
+        const {
+            businessName,
+            phone,
+            address,
+        } = req.body;
+
+        const result = await providerService.updateMyProviderProfile(
+            userId,
+            {
+                businessName,
+                phone,
+                address,
+            }
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Provider profile updated successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update provider profile",
+            error: error.message,
+        });
+    }
+};
+
 export const providerController = {
     getAllProviders,
     createProvider,
@@ -128,4 +196,6 @@ export const providerController = {
     getProviderMeals,
     updateProviders,
     getDashboardStats,
+    getMyProviderProfile,
+    updateMyProviderProfile
 }

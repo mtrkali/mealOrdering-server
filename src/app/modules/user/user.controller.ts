@@ -76,9 +76,67 @@ const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
+
+const getMyProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
+        const result = await userService.getMyProfile(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile retrieved successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get profile",
+            error: error.message,
+        });
+    }
+};
+
+
+const updateMyProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
+        const { name, phone, image } = req.body;
+        const result = await userService.updateMyProfile(userId, { name, phone, image })
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update profile",
+            error: error.message,
+        });
+    }
+};
 export const userController = {
     getAllUsers,
     updateUser,
     getSingleUser,
     deleteUser,
+    getMyProfile,
+    updateMyProfile,
 }

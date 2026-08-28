@@ -116,7 +116,6 @@ const getUsersOrder = async (req: Request, res: Response) => {
 const getUserSingleOrder = async (req: Request, res: Response) => {
     try {
         const { id } = await req.user;
-        console.log("in", id)
         const { orderId } = req.params;
         const result = await orderService.getUserSingleOrder(id as string, orderId as string);
         res.status(200).json({
@@ -148,8 +147,6 @@ const getProviderOrders = async (req: Request, res: Response) => {
         });
     }
 }
-
-
 
 const getProviderSingleOrder = async (
     req: Request,
