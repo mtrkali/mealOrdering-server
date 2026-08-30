@@ -143,8 +143,8 @@ const updateProviders = async (providerId: string, status: ProviderProfileStatus
 }
 
 const getMyProviderProfile = async (userId: string) => {
-    const provider = await prisma.order.findUnique({
-        where: { id: userId },
+    const provider = await prisma.providerProfile.findUnique({
+        where: { userId },
         include: {
             user: {
                 select: {
@@ -155,13 +155,17 @@ const getMyProviderProfile = async (userId: string) => {
                     image: true,
                     status: true,
                     role: true,
-                }
-            }
-        }
-    })
-    if (!provider) throw new Error("Provider not found");
+                },
+            },
+        },
+    });
+
+    if (!provider) {
+        throw new Error("Provider profile not found");
+    }
+
     return provider;
-}
+};
 
 const updateMyProviderProfile = async (
     userId: string,
@@ -202,6 +206,24 @@ const updateMyProviderProfile = async (
         if (!address) throw new Error("address is required");
         data.address = address;
     }
+
+    return await prisma.providerProfile.update({
+        where: { id: userId },
+        data,
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    status: true,
+                    image: true,
+                    role: true,
+                }
+            }
+        }
+    })
 
 }
 
