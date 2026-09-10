@@ -117,18 +117,62 @@ const getMyMeals = async (userId: string) => {
 
     //total meals of the provider
     return await prisma.meal.findMany({
-            where: { providerId: provider.id },
-            include: { category: true },
-            orderBy: { createdAt: 'desc' }
-        });
+        where: { providerId: provider.id },
+        include: { category: true },
+        orderBy: { createdAt: 'desc' }
+    });
 }
 
 
+const adminUpdateMeal = async (
+    mealId: string,
+    data: Prisma.MealUpdateInput | any
+) => {
+    const meal = await prisma.meal.findUnique({ where: { id: mealId } });
+    if (!meal) throw new Error("meal is not exists");
+
+    const { providerId, id, createdAt, updatedAt, ...mealData } = data;
+
+    if (mealData.price !== undefined &&
+        Number(mealData.price) < 0
+    ) {
+        throw new Error("price cannot be negative");
+    }
+
+    return await prisma.meal.update({
+        where: { id: mealId },
+        data: {
+            ...mealData,
+            ...(mealData.price !== undefined && { price: Number(mealData.price), })
+        },
+        include: {
+            provider: true,
+            category: true,
+        },
+    });
+}
+
+const adminDeleteMeal = async (mealId: string) => {
+    const meal = await prisma.meal.findUnique({
+        where: { id: mealId },
+    });
+
+    if (!meal) {
+        throw new Error("Meal not found");
+    }
+
+    return await prisma.meal.delete({
+        where: { id: mealId },
+    });
+};
+
 export const mealService = {
     getAllMeals,
-    getMealById, 
-    createMeal, 
-    updateMeal, 
-    deleteMeal, 
-    getMyMeals
+    getMealById,
+    createMeal,
+    updateMeal,
+    deleteMeal,
+    getMyMeals,
+    adminUpdateMeal,
+    adminDeleteMeal,
 }
