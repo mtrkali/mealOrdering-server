@@ -148,6 +148,62 @@ const getMyMeals = async (req: Request, res: Response) => {
     }
 }
 
+
+const adminUpdateMeal = async (req: Request, res: Response) => {
+    try {
+        const { mealId } = req.params;
+
+        const result = await mealService.adminUpdateMeal(
+            mealId as string,
+            req.body
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Meal updated successfully by admin",
+            data: result,
+        });
+    } catch (error: any) {
+        const statusCode =
+            error.message.includes("not found")
+                ? 404
+                : 400;
+
+        res.status(statusCode).json({
+            success: false,
+            message: "Something went wrong while updating the meal",
+            error: error.message,
+        });
+    }
+};
+
+
+const adminDeleteMeal = async (req: Request, res: Response) => {
+    try {
+        const { mealId } = req.params;
+
+        const result = await mealService.adminDeleteMeal(
+            mealId as string
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Meal deleted successfully by admin",
+            data: result,
+        });
+    } catch (error: any) {
+        const statusCode =
+            error.message.inclues("not found")
+                ? 404
+                : 400
+
+        res.status(statusCode).json({
+            success: false,
+            message: "Something went wrong while deleting the meal",
+            error: error.message,
+        });
+    }
+};
 export const mealsController = {
     getAllMeals,
     getMealById,
@@ -155,4 +211,6 @@ export const mealsController = {
     updateMeal,
     deleteMeal,
     getMyMeals,
+    adminUpdateMeal,
+    adminDeleteMeal
 }

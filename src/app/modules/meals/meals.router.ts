@@ -24,6 +24,27 @@ router.post(
     mealsController.createMeal
 );
 
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes - Meal Management
+|--------------------------------------------------------------------------
+*/
+
+// Admin update any meal
+router.patch(
+    "/admin/:mealId",
+    checkAuth(UserRole.ADMIN),
+    mealsController.adminUpdateMeal
+);
+
+// Admin delete any meal
+router.delete(
+    "/admin/:mealId",
+    checkAuth(UserRole.ADMIN),
+    mealsController.adminDeleteMeal
+);
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -61,5 +82,8 @@ router.delete(
     checkAuth(UserRole.PROVIDER),
     mealsController.deleteMeal
 );
+
+
+
 
 export const mealsRouter = router;
