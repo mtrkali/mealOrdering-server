@@ -208,7 +208,7 @@ const updateMyProviderProfile = async (
     }
 
     return await prisma.providerProfile.update({
-        where: { id: userId },
+        where: { userId },
         data,
         include: {
             user: {
