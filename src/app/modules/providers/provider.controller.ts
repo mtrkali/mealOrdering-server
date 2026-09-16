@@ -4,6 +4,7 @@ import { providerService } from "./provider.service";
 
 
 
+
 const getAllProviders = async (req: Request, res: Response) => {
     try {
         const result = await providerService.getAllProviders();
@@ -189,6 +190,23 @@ const updateMyProviderProfile = async (req: Request, res: Response) => {
     }
 };
 
+const deleteProvider = async (req: Request, res: Response) => {
+    try {
+        const { providerId } = req.params;
+        const result = await providerService.deleteProvider(providerId as string);
+        res.status(200).json({
+            success: true,
+            message: "provider delete successfully",
+            data: result,
+        })
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: "something went wront provider delete controller"
+        })
+    }
+}
+
 export const providerController = {
     getAllProviders,
     createProvider,
@@ -197,5 +215,6 @@ export const providerController = {
     updateProviders,
     getDashboardStats,
     getMyProviderProfile,
-    updateMyProviderProfile
+    updateMyProviderProfile,
+    deleteProvider,
 }

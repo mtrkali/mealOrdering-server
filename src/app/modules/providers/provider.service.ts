@@ -227,6 +227,21 @@ const updateMyProviderProfile = async (
 
 }
 
+const deleteProvider = async (providerId: string) => {
+    const provider = await prisma.providerProfile.findUnique({ where: { id: providerId } })
+    if (!provider) throw new Error("provider is not exists");
+    const result = await prisma.$transaction(async (tx) => {
+        await tx.meal.deleteMany({ where: { providerId } })
+        await tx.providerApplication.delete({ where: { userId: provider.userId } })
+        await tx.user.update({
+            where: { id: provider.userId },
+            data: { role: "CUSTOMER" }
+        })
+        return await tx.providerProfile.delete({ where: { id: providerId } })
+    })
+    return result;
+}
+
 export const providerService = {
     getAllProviders,
     createProvider,
@@ -236,4 +251,5 @@ export const providerService = {
     getProviderDashboarStats,
     getMyProviderProfile,
     updateMyProviderProfile,
+    deleteProvider,
 }

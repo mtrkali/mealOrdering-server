@@ -83,9 +83,41 @@ const approveBeProviderApplication = async (req: Request, res: Response) => {
 }
 
 
+const getMyProviderApplicationController = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const userId = req.user?.id;
 
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
+        const result =
+            await providerApplicationService.getMyProviderApplication(
+                userId
+            );
+
+        return res.status(200).json({
+            success: true,
+            message: "Provider application fetched successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch provider application",
+            error: error.message,
+        });
+    }
+};
 export const providerApplicationController = {
     createProviderApplicationController,
     approveBeProviderApplication,
     getAllProviderApplications,
+    getMyProviderApplicationController,
 }

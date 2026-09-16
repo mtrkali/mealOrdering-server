@@ -37,6 +37,16 @@ const deleteUser = async (id: string) => {
         )
     }
 
+    const providerProfile = await prisma.providerProfile.findUnique({
+        where: { userId: id }
+    });
+
+    if (providerProfile) {
+        throw new Error(
+            "This user cannot be deleted because they have a provider profile. Please Inactive the user instead."
+        );
+    }
+
     return await prisma.user.delete({ where: { id } })
 }
 

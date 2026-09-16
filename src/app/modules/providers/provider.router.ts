@@ -32,6 +32,12 @@ router.get(
     providerController.getSingleProvider
 )
 
+router.delete(
+    "/:providerId",
+    checkAuth(UserRole.ADMIN),
+    providerController.deleteProvider
+)
+
 router.get(
     "/:providerId/meals",
     providerController.getProviderMeals

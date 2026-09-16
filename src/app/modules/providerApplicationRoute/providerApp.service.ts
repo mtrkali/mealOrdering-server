@@ -88,8 +88,17 @@ const approveBeProviderApplication = async (applicationId: string) => {
     })
 }
 
+const getMyProviderApplication = async (userId: string) => {
+    return await prisma.providerApplication.findUnique({
+        where: {
+            userId,
+        },
+    });
+};
+
 export const providerApplicationService = {
     createProviderApplication,
     approveBeProviderApplication,
     getAllProviderApplications,
+    getMyProviderApplication,
 }
