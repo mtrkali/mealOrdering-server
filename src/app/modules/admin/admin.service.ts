@@ -8,7 +8,9 @@ const getDashboardStats = async () => {
         totalMeals,
         totalProviders,
         totalApplicantProvider,
+        totalCategory,
         revenueResult,
+
 
 
 
@@ -23,6 +25,7 @@ const getDashboardStats = async () => {
         prisma.meal.count(),
         prisma.providerProfile.count(),
         prisma.providerApplication.count(),
+        prisma.mealCategory.count(),
         prisma.order.aggregate({
             where: { status: { not: "CANCELLED" } },
             _sum: {
@@ -42,6 +45,7 @@ const getDashboardStats = async () => {
         totalMeals,
         totalProviders,
         totalApplicantProvider,
+        totalCategory,
         totalRevenue: revenueResult._sum.totalPrice ?? 0,
 
         orderStatus: {
