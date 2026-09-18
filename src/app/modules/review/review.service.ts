@@ -20,7 +20,7 @@ const createReview = async (
     } = reviewData;
 
     // Validate rating 
-    if (!rating || rating < 1 || rating > 5) throw new Error("Rating must be between 1 and");
+    if (!rating || rating < 1 || rating > 5) throw new Error("Rating must be between 1 and 5");
 
     // Check order 
 
@@ -156,9 +156,9 @@ const updateReview = async (
     const review =
         await prisma.review.findUnique({ where: { id: reviewId } })
     if (!review) throw new Error("review not found");
-    if (review.userId! == userId) {
+    if (review.userId !== userId) {
         throw new Error(
-            "You are nto authorized to update this review"
+            "You are not authorized to update this review"
         )
     }
     if (data.rating !== undefined &&

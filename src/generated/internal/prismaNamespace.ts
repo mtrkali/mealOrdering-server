@@ -1410,9 +1410,9 @@ export const ReviewScalarFieldEnum = {
   comment: 'comment',
   userId: 'userId',
   orderId: 'orderId',
+  mealId: 'mealId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  mealId: 'mealId'
+  updatedAt: 'updatedAt'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]

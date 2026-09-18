@@ -52,7 +52,7 @@ model User {
   reviews         Review[]
   accounts        Account[]
   sessions        Session[]
-  providerApplication providerApplication[]
+  providerApplication providerApplication?
 
   @@map("user")
 }
@@ -145,8 +145,8 @@ model Order {
   status     OrderStatus @default(PLACED)
   user       User        @relation(fields: [userId], references: [id])
   createdAt  DateTime    @default(now())
-  review     Review?
   items      OrderItem[]
+  reviews    Review[]
 }
 
 model OrderItem {
@@ -160,23 +160,21 @@ model OrderItem {
 }
 
 model Review {
-  id     String @id @default(uuid())
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String?
 
-  rating Int
-  comment String?
-  
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-  
-  orderId String @unique
-  order Order @relation(fields: [orderId], references: [id])
-  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+
+  mealId    String
+  meal      Meal     @relation(fields: [mealId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  mealId String
-  meal   Meal   @relation(fields: [mealId], references: [id])
-  
 }
 
 enum Role {

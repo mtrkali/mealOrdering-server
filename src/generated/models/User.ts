@@ -227,7 +227,7 @@ export type UserWhereInput = {
   reviews?: Prisma.ReviewListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
-  providerApplication?: Prisma.ProviderApplicationListRelationFilter
+  providerApplication?: Prisma.XOR<Prisma.ProviderApplicationNullableScalarRelationFilter, Prisma.providerApplicationWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -246,7 +246,7 @@ export type UserOrderByWithRelationInput = {
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
-  providerApplication?: Prisma.providerApplicationOrderByRelationAggregateInput
+  providerApplication?: Prisma.providerApplicationOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -268,7 +268,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.ReviewListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
-  providerApplication?: Prisma.ProviderApplicationListRelationFilter
+  providerApplication?: Prisma.XOR<Prisma.ProviderApplicationNullableScalarRelationFilter, Prisma.providerApplicationWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -319,7 +319,7 @@ export type UserCreateInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -338,7 +338,7 @@ export type UserUncheckedCreateInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -357,7 +357,7 @@ export type UserUpdateInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -376,7 +376,7 @@ export type UserUncheckedUpdateInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUncheckedUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -573,7 +573,7 @@ export type UserCreateWithoutSessionsInput = {
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -591,7 +591,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -625,7 +625,7 @@ export type UserUpdateWithoutSessionsInput = {
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -643,7 +643,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUncheckedUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -661,7 +661,7 @@ export type UserCreateWithoutAccountsInput = {
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -679,7 +679,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -713,7 +713,7 @@ export type UserUpdateWithoutAccountsInput = {
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -731,7 +731,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUncheckedUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProviderProfileInput = {
@@ -749,7 +749,7 @@ export type UserCreateWithoutProviderProfileInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProviderProfileInput = {
@@ -767,7 +767,7 @@ export type UserUncheckedCreateWithoutProviderProfileInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProviderProfileInput = {
@@ -801,7 +801,7 @@ export type UserUpdateWithoutProviderProfileInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProviderProfileInput = {
@@ -819,7 +819,7 @@ export type UserUncheckedUpdateWithoutProviderProfileInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUncheckedUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProviderApplicationInput = {
@@ -925,7 +925,7 @@ export type UserCreateWithoutOrdersInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -943,7 +943,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -977,7 +977,7 @@ export type UserUpdateWithoutOrdersInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -995,7 +995,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUncheckedUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -1013,7 +1013,7 @@ export type UserCreateWithoutReviewsInput = {
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -1031,7 +1031,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedManyWithoutUserInput
+  providerApplication?: Prisma.providerApplicationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1065,7 +1065,7 @@ export type UserUpdateWithoutReviewsInput = {
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -1083,7 +1083,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  providerApplication?: Prisma.providerApplicationUncheckedUpdateManyWithoutUserNestedInput
+  providerApplication?: Prisma.providerApplicationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -1096,7 +1096,6 @@ export type UserCountOutputType = {
   reviews: number
   accounts: number
   sessions: number
-  providerApplication: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1104,7 +1103,6 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
-  providerApplication?: boolean | UserCountOutputTypeCountProviderApplicationArgs
 }
 
 /**
@@ -1143,13 +1141,6 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
  */
 export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SessionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountProviderApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.providerApplicationWhereInput
 }
 
 
@@ -1233,7 +1224,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
-    providerApplication: Prisma.$providerApplicationPayload<ExtArgs>[]
+    providerApplication: Prisma.$providerApplicationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1645,7 +1636,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  providerApplication<T extends Prisma.User$providerApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$providerApplicationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$providerApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  providerApplication<T extends Prisma.User$providerApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$providerApplicationArgs<ExtArgs>>): Prisma.Prisma__providerApplicationClient<runtime.Types.Result.GetResult<Prisma.$providerApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2204,11 +2195,6 @@ export type User$providerApplicationArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.providerApplicationInclude<ExtArgs> | null
   where?: Prisma.providerApplicationWhereInput
-  orderBy?: Prisma.providerApplicationOrderByWithRelationInput | Prisma.providerApplicationOrderByWithRelationInput[]
-  cursor?: Prisma.providerApplicationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ProviderApplicationScalarFieldEnum | Prisma.ProviderApplicationScalarFieldEnum[]
 }
 
 /**

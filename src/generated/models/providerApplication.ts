@@ -340,14 +340,9 @@ export type providerApplicationUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ProviderApplicationListRelationFilter = {
-  every?: Prisma.providerApplicationWhereInput
-  some?: Prisma.providerApplicationWhereInput
-  none?: Prisma.providerApplicationWhereInput
-}
-
-export type providerApplicationOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type ProviderApplicationNullableScalarRelationFilter = {
+  is?: Prisma.providerApplicationWhereInput | null
+  isNot?: Prisma.providerApplicationWhereInput | null
 }
 
 export type providerApplicationCountOrderByAggregateInput = {
@@ -383,46 +378,36 @@ export type providerApplicationMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type providerApplicationCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput> | Prisma.providerApplicationCreateWithoutUserInput[] | Prisma.providerApplicationUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput | Prisma.providerApplicationCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.providerApplicationCreateManyUserInputEnvelope
-  connect?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
+export type providerApplicationCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput
+  connect?: Prisma.providerApplicationWhereUniqueInput
 }
 
-export type providerApplicationUncheckedCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput> | Prisma.providerApplicationCreateWithoutUserInput[] | Prisma.providerApplicationUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput | Prisma.providerApplicationCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.providerApplicationCreateManyUserInputEnvelope
-  connect?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
+export type providerApplicationUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput
+  connect?: Prisma.providerApplicationWhereUniqueInput
 }
 
-export type providerApplicationUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput> | Prisma.providerApplicationCreateWithoutUserInput[] | Prisma.providerApplicationUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput | Prisma.providerApplicationCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.providerApplicationUpsertWithWhereUniqueWithoutUserInput | Prisma.providerApplicationUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.providerApplicationCreateManyUserInputEnvelope
-  set?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  disconnect?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  delete?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  connect?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  update?: Prisma.providerApplicationUpdateWithWhereUniqueWithoutUserInput | Prisma.providerApplicationUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.providerApplicationUpdateManyWithWhereWithoutUserInput | Prisma.providerApplicationUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.providerApplicationScalarWhereInput | Prisma.providerApplicationScalarWhereInput[]
+export type providerApplicationUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput
+  upsert?: Prisma.providerApplicationUpsertWithoutUserInput
+  disconnect?: Prisma.providerApplicationWhereInput | boolean
+  delete?: Prisma.providerApplicationWhereInput | boolean
+  connect?: Prisma.providerApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.providerApplicationUpdateToOneWithWhereWithoutUserInput, Prisma.providerApplicationUpdateWithoutUserInput>, Prisma.providerApplicationUncheckedUpdateWithoutUserInput>
 }
 
-export type providerApplicationUncheckedUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput> | Prisma.providerApplicationCreateWithoutUserInput[] | Prisma.providerApplicationUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput | Prisma.providerApplicationCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.providerApplicationUpsertWithWhereUniqueWithoutUserInput | Prisma.providerApplicationUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.providerApplicationCreateManyUserInputEnvelope
-  set?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  disconnect?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  delete?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  connect?: Prisma.providerApplicationWhereUniqueInput | Prisma.providerApplicationWhereUniqueInput[]
-  update?: Prisma.providerApplicationUpdateWithWhereUniqueWithoutUserInput | Prisma.providerApplicationUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.providerApplicationUpdateManyWithWhereWithoutUserInput | Prisma.providerApplicationUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.providerApplicationScalarWhereInput | Prisma.providerApplicationScalarWhereInput[]
+export type providerApplicationUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.providerApplicationCreateOrConnectWithoutUserInput
+  upsert?: Prisma.providerApplicationUpsertWithoutUserInput
+  disconnect?: Prisma.providerApplicationWhereInput | boolean
+  delete?: Prisma.providerApplicationWhereInput | boolean
+  connect?: Prisma.providerApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.providerApplicationUpdateToOneWithWhereWithoutUserInput, Prisma.providerApplicationUpdateWithoutUserInput>, Prisma.providerApplicationUncheckedUpdateWithoutUserInput>
 }
 
 export type EnumProviderApplicationStatusFieldUpdateOperationsInput = {
@@ -454,49 +439,15 @@ export type providerApplicationCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput>
 }
 
-export type providerApplicationCreateManyUserInputEnvelope = {
-  data: Prisma.providerApplicationCreateManyUserInput | Prisma.providerApplicationCreateManyUserInput[]
-  skipDuplicates?: boolean
-}
-
-export type providerApplicationUpsertWithWhereUniqueWithoutUserInput = {
-  where: Prisma.providerApplicationWhereUniqueInput
+export type providerApplicationUpsertWithoutUserInput = {
   update: Prisma.XOR<Prisma.providerApplicationUpdateWithoutUserInput, Prisma.providerApplicationUncheckedUpdateWithoutUserInput>
   create: Prisma.XOR<Prisma.providerApplicationCreateWithoutUserInput, Prisma.providerApplicationUncheckedCreateWithoutUserInput>
+  where?: Prisma.providerApplicationWhereInput
 }
 
-export type providerApplicationUpdateWithWhereUniqueWithoutUserInput = {
-  where: Prisma.providerApplicationWhereUniqueInput
+export type providerApplicationUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.providerApplicationWhereInput
   data: Prisma.XOR<Prisma.providerApplicationUpdateWithoutUserInput, Prisma.providerApplicationUncheckedUpdateWithoutUserInput>
-}
-
-export type providerApplicationUpdateManyWithWhereWithoutUserInput = {
-  where: Prisma.providerApplicationScalarWhereInput
-  data: Prisma.XOR<Prisma.providerApplicationUpdateManyMutationInput, Prisma.providerApplicationUncheckedUpdateManyWithoutUserInput>
-}
-
-export type providerApplicationScalarWhereInput = {
-  AND?: Prisma.providerApplicationScalarWhereInput | Prisma.providerApplicationScalarWhereInput[]
-  OR?: Prisma.providerApplicationScalarWhereInput[]
-  NOT?: Prisma.providerApplicationScalarWhereInput | Prisma.providerApplicationScalarWhereInput[]
-  id?: Prisma.StringFilter<"providerApplication"> | string
-  userId?: Prisma.StringFilter<"providerApplication"> | string
-  businessName?: Prisma.StringFilter<"providerApplication"> | string
-  phone?: Prisma.StringFilter<"providerApplication"> | string
-  address?: Prisma.StringFilter<"providerApplication"> | string
-  status?: Prisma.EnumProviderApplicationStatusFilter<"providerApplication"> | $Enums.ProviderApplicationStatus
-  createdAt?: Prisma.DateTimeFilter<"providerApplication"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"providerApplication"> | Date | string
-}
-
-export type providerApplicationCreateManyUserInput = {
-  id?: string
-  businessName: string
-  phone: string
-  address: string
-  status?: $Enums.ProviderApplicationStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type providerApplicationUpdateWithoutUserInput = {
@@ -510,16 +461,6 @@ export type providerApplicationUpdateWithoutUserInput = {
 }
 
 export type providerApplicationUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessName?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumProviderApplicationStatusFieldUpdateOperationsInput | $Enums.ProviderApplicationStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type providerApplicationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
