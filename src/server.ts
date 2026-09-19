@@ -1,9 +1,11 @@
 import app from "./app.js";
+import startOrderCleanupScheduler from "./app/modules/order/order.sheduler.js";
 import { prisma } from "./lib/prisma";
 
 const bootstrap = async () => {
   try {
     await prisma.$connect();
+    startOrderCleanupScheduler();
     app.listen(process.env.PORT, () => {
       console.log(`Server is running on http://localhost:${process.env.PORT}`);
     });

@@ -142,9 +142,10 @@ model Order {
   userId     String
   totalPrice Float
   address    String
-  status     OrderStatus @default(PLACED)
+  status     OrderStatus @default(PLACED) 
   user       User        @relation(fields: [userId], references: [id])
   createdAt  DateTime    @default(now())
+  cancelledAt DateTime?
   items      OrderItem[]
   reviews    Review[]
 }

@@ -181,7 +181,16 @@ const updateOrder = async (
     if (!order) throw new Error("Order not found");
     // Admin can update any order
     if (role === UserRole.ADMIN) {
-        const data: Prisma.OrderUpdateInput = status === undefined ? {} : { status };
+        const data: Prisma.OrderUpdateInput =
+            status === undefined
+                ? {}
+                : {
+                    status,
+                    cancelledAt:
+                        status === "CANCELLED"
+                            ? new Date()
+                            : null,
+                };
 
         return await prisma.order.update({
             where: { id: orderId },
@@ -196,11 +205,20 @@ const updateOrder = async (
     });
     if (!provider) throw new Error("Provider profile not found for this user");
     // check whether this order contains this provider's meal
-    const owsMeal = order.items.some(item => item.meal.providerId === provider.id);
-    if (!owsMeal) throw new Error("you don't have permission to update this order");
+    const ownsMeal = order.items.some(item => item.meal.providerId === provider.id);
+    if (!ownsMeal) throw new Error("you don't have permission to update this order");
     return prisma.order.update({
         where: { id: orderId },
-        data: status === undefined ? {} : { status },
+        data:
+            status === undefined
+                ? {}
+                : {
+                    status,
+                    cancelledAt:
+                        status === "CANCELLED"
+                            ? new Date()
+                            : null,
+                },
     })
 }
 
